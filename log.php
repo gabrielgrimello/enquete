@@ -108,9 +108,9 @@
                                         //verifica se existe conexão com bd, caso não tenta criar uma nova
                                             include 'conexao.inc';
                                             
-                                            $sql = mysql_query("Select * From logs ORDER BY logid DESC");
+                                            $sql = mysqli_query($conexao,"Select * From logs ORDER BY logid DESC");
                                                                                      
-                                            while($linha = mysql_fetch_array($sql)) //Já a instrução while faz um loop entre todos os registros e armazena seus valores na variável $linha
+                                            while($linha = mysqli_fetch_array($sql)) //Já a instrução while faz um loop entre todos os registros e armazena seus valores na variável $linha
                                             { //Inicia o loop
                                                  
                                         ?> 

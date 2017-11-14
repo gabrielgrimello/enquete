@@ -28,7 +28,7 @@
         // Monta a query para inserir o log no sistema
         
         $sql = "INSERT INTO logs (logid,hora,ip,relacionamento,mensagem,acao) VALUES (null,'$HORA','$IP','$REL','$MSGF','$nome_usuario')"; 
-        if (mysql_query($sql,$conexao)) //Realiza a consulta
+        if (mysqli_query($conexao,$sql)) //Realiza a consulta
         return true;
         else
         return false;
@@ -176,39 +176,39 @@
                                         $cod_candidato_voto = $_POST['voto'];//recebe o codigo do candidato escolhido
                                         
                                         //faz o select para pegar dados do candidato que efetuou o voto
-                                        $sql3 = mysql_query("Select * From tb_candidato where cod_cand='$codigo_cand'");
-                                        $linha3 = mysql_fetch_array($sql3);
+                                        $sql3 = mysqli_query($conexao,"Select * From tb_candidato where cod_cand='$codigo_cand'");
+                                        $linha3 = mysqli_fetch_array($sql3);
                                         $votosenv = $linha3['votosenv_cand'];
                                         
                                         switch ($votosenv){
                                             case 0:
                                         $votosenv = $linha3['votosenv_cand']+1; //soma um nos votos enviados de quem efetuou o voto e grava no BD
-                                        mysql_query("UPDATE tb_candidato SET votosenv_cand='$votosenv', votoenvdest_cand='$cod_candidato_voto' WHERE cod_cand=$codigo_cand");
+                                        mysqli_query($conexao,"UPDATE tb_candidato SET votosenv_cand='$votosenv', votoenvdest_cand='$cod_candidato_voto' WHERE cod_cand=$codigo_cand");
                                         
                                         // pega dados do candidato que recebeu o voto, como é o primeiro soma um no campo destaque
-                                        $sql2 = mysql_query("Select * From tb_candidato where cod_cand='$cod_candidato_voto'");
-                                        $linha2 = mysql_fetch_array($sql2);
+                                        $sql2 = mysqli_query($conexao,"Select * From tb_candidato where cod_cand='$cod_candidato_voto'");
+                                        $linha2 = mysqli_fetch_array($sql2);
                                         $votorecdest = $linha2['votorecdest_cand']+1;
                                         $nome_candidato=$linha2['nome_cand'];
-                                        mysql_query("UPDATE tb_candidato SET votorecdest_cand='$votorecdest' WHERE cod_cand=$cod_candidato_voto");
+                                        mysqli_query($conexao,"UPDATE tb_candidato SET votorecdest_cand='$votorecdest' WHERE cod_cand=$cod_candidato_voto");
                                         break;
                                     
                                             case 1:
                                         $votosenv = $linha3['votosenv_cand']+1;
-                                        mysql_query("UPDATE tb_candidato SET votosenv_cand='$votosenv', votoenvdestfut_cand='$cod_candidato_voto' WHERE cod_cand=$codigo_cand");
+                                        mysqli_query($conexao,"UPDATE tb_candidato SET votosenv_cand='$votosenv', votoenvdestfut_cand='$cod_candidato_voto' WHERE cod_cand=$codigo_cand");
                                         
                                         // pega dados do candidato que recebeu o voto, como é o primeiro soma um no campo destaque
-                                        $sql2 = mysql_query("Select * From tb_candidato where cod_cand='$cod_candidato_voto'");
-                                        $linha2 = mysql_fetch_array($sql2);
+                                        $sql2 = mysqli_query($conexao,"Select * From tb_candidato where cod_cand='$cod_candidato_voto'");
+                                        $linha2 = mysqli_fetch_array($sql2);
                                         $votorecdestfut = $linha2['votorecdestfut_cand']+1;
                                         $nome_candidato=$linha2['nome_cand'];
-                                        mysql_query("UPDATE tb_candidato SET votorecdestfut_cand='$votorecdestfut' WHERE cod_cand=$cod_candidato_voto");
+                                        mysqli_query($conexao,"UPDATE tb_candidato SET votorecdestfut_cand='$votorecdestfut' WHERE cod_cand=$cod_candidato_voto");
                                         break;     
                                         }
                                         
                                         setLOG("Usuario $nome_usuario votou no candidato $nome_candidato", "VOTAÇÃO");
 
-                                        if(mysql_affected_rows() > 0){ //verifica se foi afetada alguma linha, nesse caso atualizada alguma linha
+                                        if(mysqli_affected_rows($conexao) > 0){ //verifica se foi afetada alguma linha, nesse caso atualizada alguma linha
                             ?>
                                             <div class="alert alert-success text-center">
                                             <strong>OBRIGADO!</strong> Seu voto foi computado com sucesso.
@@ -229,8 +229,8 @@
                                     }//fecha if isset
                                     else{
                                         include 'conexao.inc';
-                                        $sql3 = mysql_query("Select * From tb_candidato where cod_cand='$codigo_cand'");
-                                        $linha3 = mysql_fetch_array($sql3);
+                                        $sql3 = mysqli_query($conexao,"Select * From tb_candidato where cod_cand='$codigo_cand'");
+                                        $linha3 = mysqli_fetch_array($sql3);
                                         $votosenv = $linha3['votosenv_cand'];   
                                         if($votosenv<1){                                            
                             ?>
@@ -246,11 +246,11 @@
                             <?php
                                                     //verifica se existe conexão com bd, caso não tenta criar uma nova
                                                     include 'conexao.inc';
-                                                    $sql2 = mysql_query("Select * From tb_candidato where cod_cand='$codigo_cand'");
-                                                    $linha2 = mysql_fetch_array($sql2);
-                                                    $sql = mysql_query("Select * From tb_candidato where (ativado_cand=1 and dispvoto_cand=1 and filial_cand='$filial_session' and cod_cand!='$codigo_cand' and cod_cand!='$linha2[votoenvdest_cand]')");
+                                                    $sql2 = mysqli_query($conexao,"Select * From tb_candidato where cod_cand='$codigo_cand'");
+                                                    $linha2 = mysqli_fetch_array($sql2);
+                                                    $sql = mysqli_query($conexao,"Select * From tb_candidato where (ativado_cand=1 and filial_cand='$filial_session' and cod_cand!='$codigo_cand' and cod_cand!='$linha2[votoenvdest_cand]')");
 
-                                                    while($linha = mysql_fetch_array($sql)) //Já a instrução while faz um loop entre todos os registros e armazena seus valores na variável $linha
+                                                    while($linha = mysqli_fetch_array($sql)) //Já a instrução while faz um loop entre todos os registros e armazena seus valores na variável $linha
                                                     { //Inicia o loop
                             ?> 
                                                         <tr> 

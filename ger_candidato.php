@@ -124,9 +124,9 @@
                                         <?php
                                         //verifica se existe conexão com bd, caso não tenta criar uma nova
                                             include 'conexao.inc';
-                                            $sql = mysql_query("Select * From tb_candidato order by nome_cand");
+                                            $sql = mysqli_query($conexao,"Select * From tb_candidato order by nome_cand");
                                                                                         
-                                            while($linha = mysql_fetch_array($sql)) //Já a instrução while faz um loop entre todos os registros e armazena seus valores na variável $linha
+                                            while($linha = mysqli_fetch_array($sql)) //Já a instrução while faz um loop entre todos os registros e armazena seus valores na variável $linha
                                             { //Inicia o loop
                                                
                                         ?> 

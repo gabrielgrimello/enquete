@@ -8,12 +8,12 @@
         date_default_timezone_set('America/Sao_Paulo'); 
         $HORA = date('Y-m-d H:i:s'); // Salva a data e hora atual (formato MySQL)
         $nome_usuario = strtoupper($_SESSION['usuario']);
-        $MSGF = mysql_escape_string($MSG); // Limpando String
+        $MSGF = mysqli_escape_string($conexao,$MSG); // Limpando String
 
         // Monta a query para inserir o log no sistema
         
         $sql = "INSERT INTO logs (logid,hora,ip,relacionamento,mensagem,acao) VALUES (null,'$HORA','$IP','$REL','$MSGF','$nome_usuario')"; 
-        if (mysql_query($sql,$conexao)) //Realiza a consulta
+        if (mysqli_query($conexao,$sql)) //Realiza a consulta
         return true;
         else
         return false;
@@ -109,9 +109,9 @@
                                             $situacao = $_POST['situacao'];
                                             $senha = md5($senha);
 
-                                            $result = mysql_query("SELECT * FROM tb_candidato WHERE nome_cand='$nome'"); // faz um select no banco para ver se existe algum registro com o usuario e senha informado
-                                            $resultado = mysql_num_rows($result); //conta quantidade de linhas no resultado do select
-
+                                            $result = mysqli_query($conexao,"SELECT * FROM tb_candidato WHERE nome_cand='$nome'"); // faz um select no banco para ver se existe algum registro com o usuario e senha informado
+                                            $resultado = mysqli_num_rows($conexao,$result); //conta quantidade de linhas no resultado do select
+                                            
                                             /* Logo abaixo temos um bloco com if e else, verificando se a variável $result foi bem sucedida, ou seja se ela estiver encontrado algum registro idêntico o seu valor será igual a 1, se não, se não tiver registros seu valor será 0. Dependendo do resultado ele redirecionará para a pagina site.php ou retornara  para a pagina do formulário inicial para que se possa tentar novamente realizar o login */
 
                                             if($resultado > 0){
@@ -128,11 +128,11 @@
                                     <?php   }
                                             else{
                                                 $string_sql = "INSERT INTO tb_candidato (cod_cand,nome_cand,login_cand,senha_cand,email_cand,filial_cand,setor_cand,tipo_cand,votosenv_cand,votoenvdest_cand,votoenvdestfut_cand,votorecdest_cand,votorecdestfut_cand,ativado_cand) VALUES (null,'$nome','$login','$senha','$email','$filial','$setor','$tipo',0,0,0,0,0,'$situacao')"; 
-                                                mysql_query($string_sql,$conexao); //Realiza a consulta
+                                                mysqli_query($conexao,$string_sql); //Realiza a consulta
                                                 
                                                 setLOG("Usuario $nome", "CADASTRO USUARIO");
 
-                                                if(mysql_affected_rows() > 0){ //verifica se foi afetada alguma linha, nesse caso inserida alguma linha
+                                                if(mysqli_affected_rows($conexao) > 0){ //verifica se foi afetada alguma linha, nesse caso inserida alguma linha
                                                     
                                     ?>          
                                                     <div class="alert alert-success">
@@ -151,7 +151,7 @@
                                     ?>                </div>
                                     <?php
                                                 }
-                                            mysql_close($conexao); //fecha conexão com banco de dados 
+                                            mysqli_close($conexao); //fecha conexão com banco de dados 
                                             }
                                         }
 

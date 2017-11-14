@@ -22,12 +22,12 @@
         date_default_timezone_set('America/Sao_Paulo'); 
         $HORA = date('Y-m-d H:i:s'); // Salva a data e hora atual (formato MySQL)
         $nome_usuario = strtoupper($_SESSION['usuario']);
-        $MSGF = mysql_escape_string($MSG); // Limpando String
+        $MSGF = mysqli_escape_string($conexao,$MSG); // Limpando String
 
         // Monta a query para inserir o log no sistema
         
         $sql = "INSERT INTO logs (logid,hora,ip,relacionamento,mensagem,acao) VALUES (null,'$HORA','$IP','$REL','$MSGF','$nome_usuario')"; 
-        if (mysql_query($sql,$conexao)) //Realiza a consulta
+        if (mysqli_query($conexao,$sql)) //Realiza a consulta
         return true;
         else
         return false;
@@ -122,11 +122,11 @@
                                 $senha = md5($senha);
                                
                                 // inserindo valores recebidos na base de dados
-                                mysql_query("UPDATE tb_candidato SET senha_cand='$senha' WHERE cod_cand=$cod_candidato");
+                                mysqli_query($conexao, "UPDATE tb_candidato SET senha_cand='$senha' WHERE cod_cand=$cod_candidato");
                                 // grava log na base
                                 setLOG("Usuario $nome", "ALTERACAO USUARIO");
                               
-                                if(mysql_affected_rows() > 0){ //verifica se foi afetada alguma linha, nesse caso atualizada alguma linha
+                                if(mysqli_affected_rows($conexao) > 0){ //verifica se foi afetada alguma linha, nesse caso atualizada alguma linha
                     ?>              <br>
                                     <div class="alert alert-success text-center">
                                         <strong>Muito bem!</strong> Os dados do usuário foram atualizados com sucesso.
@@ -165,8 +165,8 @@
                                                   </script>";
                                                 exit;
                                             }
-                                            $sql = mysql_query("Select * From tb_candidato WHERE cod_cand=$cod_cand");
-                                            $linha = mysql_fetch_array($sql)
+                                            $sql = mysqli_query($conexao,"Select * From tb_candidato WHERE cod_cand=$cod_cand");
+                                            $linha = mysqli_fetch_array($sql)
                                                             
                     ?> 
                                             <div class="col-lg-4">

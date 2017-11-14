@@ -1,4 +1,14 @@
+
 <?php
-	$conexao = mysql_connect ("localhost", "root", "w2h1l3");
-	mysql_select_db ("votacao");
-	?>
+
+$conexao = mysqli_connect("localhost", "root", "", "wba_enquete");
+ 
+if (!$conexao) {
+    echo "Error: Falha ao conectar-se com o banco de dados MySQL." . PHP_EOL;
+    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+    exit;
+}
+  
+
+?>

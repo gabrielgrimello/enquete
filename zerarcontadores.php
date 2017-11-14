@@ -105,7 +105,7 @@
                                     <?php
                                     if (isset($_POST['zerar'])){
                                         include 'conexao.inc'; //inclui a conexao com o banco
-                                        mysql_query("UPDATE tb_candidato SET votosenv_cand='0',votoenvdest_cand='0',votoenvdestfut_cand='0',votorecdest_cand='0',votorecdestfut_cand='0'");
+                                        mysqli_query($conexao, "UPDATE tb_candidato SET votosenv_cand='0',votoenvdest_cand='0',votoenvdestfut_cand='0',votorecdest_cand='0',votorecdestfut_cand='0'");
                                     }
                                         ?>
                                 </div>

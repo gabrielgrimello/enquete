@@ -8,12 +8,12 @@
         date_default_timezone_set('America/Sao_Paulo'); 
         $HORA = date('Y-m-d H:i:s'); // Salva a data e hora atual (formato MySQL)
         $nome_usuario = strtoupper($_SESSION['usuario']);
-        $MSGF = mysql_escape_string($MSG); // Limpando String
+        $MSGF = mysqli_escape_string($conexao,$MSG); // Limpando String
 
         // Monta a query para inserir o log no sistema
         
         $sql = "INSERT INTO logs (logid,hora,ip,relacionamento,mensagem,acao) VALUES (null,'$HORA','$IP','$REL','$MSGF','$nome_usuario')"; 
-        if (mysql_query($sql,$conexao)) //Realiza a consulta
+        if (mysqli_query($conexao,$sql)) //Realiza a consulta
         return true;
         else
         return false;
@@ -97,14 +97,14 @@
                                             $senha = md5($senha);
                                             
                                             include 'conexao.inc'; //cria a conexão com obanco
-                                            $result = mysql_query("SELECT * FROM tb_candidato WHERE login_cand='$login' AND senha_cand='$senha' and ativado_cand=1"); // faz um select no banco para ver se existe algum registro com o usuario e senha informado
-                                            $resultado = mysql_num_rows($result); //conta quantidade de linhas no resultado do select
+                                            $result = mysqli_query($conexao, "SELECT * FROM tb_candidato WHERE login_cand='$login' AND senha_cand='$senha' and ativado_cand=1"); // faz um select no banco para ver se existe algum registro com o usuario e senha informado
+                                            $resultado = mysqli_num_rows($result); //conta quantidade de linhas no resultado do select
                                           
                                             /* Logo abaixo temos um bloco com if e else, verificando se a variável $result foi bem sucedida, ou seja se ela estiver encontrado algum registro idêntico o seu valor será igual a 1, se não, se não tiver registros seu valor será 0. Dependendo do resultado ele redirecionará para a pagina site.php ou retornara  para a pagina do formulário inicial para que se possa tentar novamente realizar o login */
                                                 
                                                 if($resultado > 0)
                                                     {
-                                                        $array_candidato=mysql_fetch_array($result);
+                                                        $array_candidato=mysqli_fetch_array($result);
                                                         $_SESSION['logado'] = true;
                                                         $_SESSION['usuario'] = $array_candidato['nome_cand'];
                                                         $_SESSION['permissao'] = $array_candidato['tipo_cand'];
@@ -142,7 +142,7 @@
                                                           </script>";
                                                 }
 
-                                            mysql_close($conexao); //fecha conexão com banco de dados 
+                                            mysqli_close($conexao); //fecha conexão com banco de dados 
                                             }
 
                                         else{ // caso ainda não tenha existido um POST entra nesete else e mostra o formulário abaixo
