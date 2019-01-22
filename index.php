@@ -124,7 +124,7 @@
                                 <div class="table-responsive">
                                 <br>
                                 <div class="alert alert-success text-center">
-                                    <strong>BEM VINDO A VOTAÇÃO DESTAQUE 2016!</strong><br> Você está prestes a votar no destaque 2016, mas antes de começar comunicamos que toda campanha de votos é válida!
+                                    <strong>BEM VINDO A VOTAÇÃO DESTAQUE 2018!</strong><br> Você está prestes a votar no destaque 2018, mas antes de começar comunicamos que toda campanha de votos é válida!
                                 </div>
                                 
                                 <div class="alert alert-warning text-center">
@@ -159,7 +159,7 @@
                                                     <br>
                                                     3)	Não serão computados votos para mesma pessoa.
                                                     <br>
-                                                    4)	A Votação acontece até 8/12/2016.
+                                                    4)	A Votação acontece até 30/11/2018 (sexta-feira).
                                                     <br>
                                                     5)	O prêmio será entregue no dia da Confraternização.
                                             </div>
@@ -247,7 +247,7 @@
                                                     //verifica se existe conexão com bd, caso não tenta criar uma nova
                                                      $sql2 = mysqli_query($conexao, "Select * From tb_candidato where cod_cand='$codigo_cand'");
                                                     $linha2 = mysqli_fetch_assoc($sql2);
-                                                    $sql = mysqli_query($conexao, "Select * From tb_candidato where (ativado_cand=1  and filial_cand='$filial_session' and cod_cand!='$codigo_cand' and cod_cand!='$linha2[votoenvdest_cand]')");
+                                                    $sql = mysqli_query($conexao, "Select * From tb_candidato where (ativado_cand=1 and dispvoto_cand=1 and filial_cand='$filial_session' and cod_cand!='$codigo_cand' and cod_cand!='$linha2[votoenvdest_cand]') order by nome_cand");
                                                     if($sql === FALSE) { 
                                                         die(mysqli_error($conexao));
                                                      }

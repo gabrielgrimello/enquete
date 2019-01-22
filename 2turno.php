@@ -248,7 +248,7 @@
                                                     include 'conexao.inc';
                                                     $sql2 = mysqli_query($conexao,"Select * From tb_candidato where cod_cand='$codigo_cand'");
                                                     $linha2 = mysqli_fetch_array($sql2);
-                                                    $sql = mysqli_query($conexao,"Select * From tb_candidato where (ativado_cand=1 and filial_cand='$filial_session' and cod_cand!='$codigo_cand' and cod_cand!='$linha2[votoenvdest_cand]')");
+                                                    $sql = mysqli_query($conexao,"Select * From tb_candidato where (ativado_cand=1 and dispvoto_cand=1 and filial_cand='$filial_session' and cod_cand!='$codigo_cand' and cod_cand!='$linha2[votoenvdest_cand]')");
 
                                                     while($linha = mysqli_fetch_array($sql)) //Já a instrução while faz um loop entre todos os registros e armazena seus valores na variável $linha
                                                     { //Inicia o loop

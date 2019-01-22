@@ -109,11 +109,12 @@
                                 $tipo = $_POST['tipo'];
                                 $filial = $_POST['filial'];
                                 $votosenv = $_POST['votosenv'];
+                                $dispvoto = $_POST['dispvoto'];
                                 $situacao = $_POST['situacao'];
                                 
                                
                                 // inserindo valores recebidos na base de dados
-                                mysqli_query($conexao,"UPDATE tb_candidato SET nome_cand='$nome',login_cand='$login',email_cand='$email',filial_cand='$filial',setor_cand='$setor',tipo_cand='$tipo',votosenv_cand='$votosenv',ativado_cand='$situacao' WHERE cod_cand=$cod_candidato");
+                                mysqli_query($conexao,"UPDATE tb_candidato SET nome_cand='$nome',login_cand='$login',email_cand='$email',filial_cand='$filial',setor_cand='$setor',tipo_cand='$tipo',votosenv_cand='$votosenv',ativado_cand='$situacao',dispvoto_cand='$dispvoto' WHERE cod_cand=$cod_candidato");
                                 // grava log na base
                                 setLOG("Usuario $nome", "ALTERACAO USUARIO");
                               
@@ -226,6 +227,18 @@
                                                 </div>
                                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                                 <div class="help-block with-errors"></div>
+                                                </div>
+                                                <br>
+                                                <div class="form-group has-feedback">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Disponivel para voto</span>
+                                                        <select name="dispvoto" class="form-control">
+                                                            <option value="1" <?php if($linha['dispvoto_cand']=='1') echo 'selected';?>>ATIVO</option>
+                                                            <option value="0" <?php if($linha['dispvoto_cand']=='0') echo 'selected';?>>DESATIVADO</option>
+                                                        </select>
+                                                    </div>
+                                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                                    <div class="help-block with-errors"></div>
                                                 </div>
                                                 <br>
                                                 <div class="form-group has-feedback">
